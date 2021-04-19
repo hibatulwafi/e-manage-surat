@@ -1,4 +1,4 @@
-## About Laravel 7 Starter APP
+## About E Arsip Laravel
 
 E- Arsip
 
@@ -7,7 +7,7 @@ E- Arsip
 	
 - Masuk ke direktori aplikasi dan jalankan composer
 	```sh
-	$ cd nama-project
+	$ cd e-arsip-laravel
 	$ composer install
 	```
  - Copy file .env.example menjadi .env
