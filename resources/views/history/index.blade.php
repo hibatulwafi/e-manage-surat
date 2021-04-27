@@ -53,8 +53,10 @@
                                     <tr class="text-center">
                                         <th>No</th>
                                         <th>Nama Peminjam</th>
-                                        <th>Tanggal Pinjam</th>
-                                        <th>Tanggal Kembali</th>
+                                        <th>Arsip</th>
+                                        <th>No Kontrak</th>
+                                        <th>Tgl Pinjam</th>
+                                        <th>Tgl Kembali</th>
                                         <th>Petugas</th>
                                         <th>Status</th>
                                         <th>#</th>
@@ -66,8 +68,10 @@
                                         <tr>
                                             <td width="5%" class="text-center">{{$no++}}</td>
                                             <td>{{$row->nama_peminjam }}</td>
-                                            <td>{{$row->tanggal_peminjaman }}</td>
-                                            <td>{{$row->tanggal_kembali }}</td>   
+                                            <td>{{$row->nama_arsip }}</td>
+                                            <td>{{$row->no_kontrak }}</td>
+                                            <td class="text-center">{{date_format(date_create($row->tanggal_peminjaman),"d, M Y") }}</td>
+                                            <td class="text-center">{{date_format(date_create($row->tanggal_kembali),"d, M Y") }}</td>
                                             <td>{{$row->name }}</td> 
                                             <td class="text-center">
                                               @if($row->status_peminjaman == 0)
@@ -108,7 +112,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Data Tidak Ada</td>
+                                            <td colspan="9" class="text-center">Data Tidak Ada</td>
                                         </tr>
                                     @endforelse
     

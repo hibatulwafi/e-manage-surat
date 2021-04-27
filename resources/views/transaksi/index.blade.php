@@ -56,8 +56,9 @@
                                     <tr class="text-center">
                                         <th>No</th>
                                         <th>Nama Peminjam</th>
-                                        <th>Tanggal Pinjam</th>
-                                        <th>Tanggal Kembali</th>
+                                        <th>Arsip</th>
+                                        <th>Tgl Pinjam</th>
+                                        <th>Tgl Kembali</th>
                                         <th>Petugas</th>
                                         <th>Status</th>
                                         <th>#</th>
@@ -69,8 +70,13 @@
                                         <tr>
                                             <td width="5%" class="text-center">{{$no++}}</td>
                                             <td>{{$row->nama_peminjam }}</td>
-                                            <td>{{$row->tanggal_peminjaman }}</td>
-                                            <td>{{$row->tanggal_kembali }}</td>   
+                                            <td>{{$row->nama_arsip }}</td>
+                                            <td class="text-center">{{date_format(date_create($row->tanggal_peminjaman),"d, M Y") }}</td>
+                                            <td class="text-center">@if($row->tanggal_kembali == null)
+                                                   <span class="badge badge-info">Tidak Ada Data</span>
+                                                @else
+                                                    {{date_format(date_create($row->tanggal_kembali),"d, M Y") }}
+                                                @endif</td>   
                                             <td>{{$row->name }}</td> 
                                             <td class="text-center">
                                               @if($row->status_peminjaman == 0)
@@ -91,20 +97,42 @@
                                                         <i class="fas fa-ellipsis-v    "></i>
                                                     </button>
                                                     <ul class="dropdown-menu">
+
+                                                      @php($status = $row->status_peminjaman)
+                                                      @if($status == 0 || $status == 1 || $status == 2 || $status == 3)
                                                         <li>
                                                             <a class="dropdown-item"
                                                                 href="#">
-                                                                <i class="fas fa-edit    "></i>
+                                                                <i class="fas fa-eye"></i>
                                                                 Detail
                                                             </a>
                                                         </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#"
-                                                                onclick="handleDelete ({{ $row->id_peminjaman }})">
-                                                                <i class="fas fa-trash    "></i>
-                                                                Batalkan
-                                                            </a>
-                                                        </li>
+                                                          @if($status == 1)
+                                                            <li>
+                                                                <a class="btn btn-success btn-sm"
+                                                                    href="{{ route('approval.terima', $row->id_peminjaman) }}">
+                                                                    <i class="fas fa-check"></i>
+                                                                    Terima
+                                                                </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a class="btn btn-danger btn-sm"
+                                                                    href="{{ route('approval.tolak', $row->id_peminjaman) }}">
+                                                                    <i class="fas fa-times"></i>
+                                                                    Tolak
+                                                                </a>
+                                                            </li>
+                                                          @elseif($status == 2)
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"
+                                                                    onclick="handleKembali ({{ $row->id_peminjaman }})">
+                                                                    <i class="fas fa-reply"></i>
+                                                                    Kembali
+                                                                </a>
+                                                            </li>  
+                                                         @endif
+                                                      @endif
                                                     </ul>
                                                 </div>
                                             </td>
@@ -157,6 +185,31 @@
     </div>
 </div>
 
+<!-- Modal Kembali-->
+<div class="modal fade" id="kembaliModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Pengembalian Arsip</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mt-3">Apakah Arsip ini sudah dikembalikan?</p>
+            </div>
+            <div class="modal-footer">
+                <form action="" method="POST" id="kembaliForm">
+                    @csrf
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak, Kembali</button>
+                    <button type="submit" class="btn btn-danger">Ya, Sudah</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Import File-->
 <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -200,6 +253,16 @@
         form.action = `./delete/transaksi/${id}`
         console.log(form)
         $('#deleteModal').modal('show')
+    }
+
+</script>
+
+<script>
+    function handleKembali(id) {
+        let form = document.getElementById('kembaliForm')
+        form.action = `transaksi/kembali/${id}`
+        console.log(form)
+        $('#kembaliModal').modal('show')
     }
 
 </script>

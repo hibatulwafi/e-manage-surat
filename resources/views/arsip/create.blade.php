@@ -41,12 +41,11 @@
                         <form method="POST" action="{{ route('arsip.store') }}" enctype="multipart/form-data">
                             @csrf
                         <div class="row">
+                        <!-- Baris 1-->
                             <div class="col-md-1"></div>
-                           
-
                             <div class="col-md-5 px-3">
                                 <div class="form-group">
-                                    <label for="id_rak">Kategori</label>
+                                    <label for="id_rak">Rak Arsip</label>
                                     <select name="id_rak" id="id_rak" class="form-control @error('id_rak') is-invalid @enderror">
                                         <option value="" disabled="" selected="">-Pilih rak-</option>
                                         @foreach ($rak as $item)
@@ -76,6 +75,58 @@
 
                             </div>
                             <div class="col-md-1"></div>
+
+                            <!-- Baris 2-->
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5 px-3">
+                                <div class="form-group">
+                                <label for="no_polis">No Polis</label>
+                                   <input type="text" class="form-control @error('no_polis') is-invalid @enderror" name="no_polis" id="no_polis" value="{{ old('no_polis') }}"  placeholder="No Polis" autofocus>
+                                    @error('no_polis')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-5 px-3">
+
+                                <div class="form-group">
+                                    <label for="no_kontrak">No Kontrak</label>
+                                    <input type="text" class="form-control @error('no_kontrak') is-invalid @enderror" name="no_kontrak" id="no_kontrak" value="{{ old('no_kontrak') }}"  placeholder="No Kontrak" autofocus>
+                                    @error('no_kontrak')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </div>
+                            <div class="col-md-1"></div>
+
+                            <!-- Baris 3-->
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5 px-3">
+                                <div class="form-group">
+                                    <label for="tanggal_valid">Tanggal Valid</label>
+                                   <input type="date" class="form-control @error('tanggal_valid') is-invalid @enderror" name="tanggal_valid" id="tanggal_valid" value="{{ old('tanggal_valid') }}"  placeholder="" autofocus>
+                                    @error('tanggal_valid')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-5 px-3">
+
+                                <div class="form-group">
+                                    <label for="nama_customer">Customer</label>
+                                    <input type="text" class="form-control @error('nama_customer') is-invalid @enderror" name="nama_customer" id="nama_customer" value="{{ old('nama_customer') }}"  placeholder="Nama Customer" autofocus>
+                                    @error('nama_customer')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </div>
+                            <div class="col-md-1"></div>
+
+
+
+                            <!-- Baris 4-->
                             <div class="col-md-1"></div>
                             <div class="col-md-10 px-3">
                                 <div class="form-group">

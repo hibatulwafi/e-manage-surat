@@ -55,7 +55,7 @@
                                                     selected
                                                 @endif    
                                             >
-                                            {{ $item->nama_arsip }}
+                                            {{ $item->nama_arsip }} - {{ $item->nama_rak }}
                                         </option>
                                         @endforeach
                                     </select>
@@ -68,7 +68,18 @@
 
                                 <div class="form-group">
                                     <label for="nama_peminjam">Nama</label>
-                                    <input type="text" class="form-control @error('nama_peminjam') is-invalid @enderror" name="nama_peminjam" id="nama_peminjam" value="{{ old('nama_peminjam') }}"  placeholder="Nama Peminjam" autofocus>
+                                     <select name="nama_peminjam" id="nama_peminjam" class="form-control @error('nama_peminjam') is-invalid @enderror">
+                                        <option value="" disabled="" selected="">-Peminjam-</option>
+                                        @foreach ($user as $row)
+                                        <option value="{{ $row->id  }}"
+                                                @if ($row->name == old('name'))
+                                                    selected
+                                                @endif    
+                                            >
+                                            {{ $row->name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
                                     @error('nama_peminjam')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
@@ -79,10 +90,10 @@
                             <div class="col-md-1"></div>
                             <div class="col-md-10 px-3">
 
-                               <div class="form-group">
+                              <!--  <div class="form-group">
                                     <label for="daterange">Tanggal Pinjam - Kembali</label>
                                     <input type="text"  class="form-control @error('daterange') is-invalid @enderror" name="daterange" value="01/04/2021 - 02/04/2021" />
-                                </div>
+                                </div> -->
 
 
                                   <div class="form-group d-flex justify-content-end">
@@ -115,10 +126,13 @@
 <script>
     
         $(document).ready(function () {
-            $('#id_rak').select2()
+            $('#id_arsip').select2()
         });
 
-
+        $(document).ready(function () {
+            $('#nama_peminjam').select2()
+        });
+/*
 $(function() {
   $('input[name="daterange"]').daterangepicker({
     opens: 'left'
@@ -126,13 +140,13 @@ $(function() {
     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
   });
 });
-
+*/
 
 </script>
-
+<!-- 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> -->
 
 @endsection

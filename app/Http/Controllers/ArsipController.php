@@ -38,6 +38,10 @@ class ArsipController extends Controller
             'id_rak' => $request->id_rak,
             'nama_arsip' => $request->nama_arsip,
             'keterangan_arsip' => $request->keterangan_arsip,
+            'no_polis' => $request->no_polis,
+            'no_kontrak' => $request->no_kontrak,
+            'tanggal_valid' => $request->tanggal_valid,
+            'nama_customer' => $request->nama_customer,
             'status_arsip' => 1,
             'created_at' => now()
         	]);
@@ -71,6 +75,10 @@ class ArsipController extends Controller
 	            'id_rak' => $request->id_rak,
 	            'nama_arsip' => $request->nama_arsip,
 	            'keterangan_arsip' => $request->keterangan_arsip,
+              'no_polis' => $request->no_polis,
+              'no_kontrak' => $request->no_kontrak,
+              'tanggal_valid' => $request->tanggal_valid,
+              'nama_customer' => $request->nama_customer,
 	            'status_arsip' => 1,
 	            'updated_at' => now()
 	        	]);

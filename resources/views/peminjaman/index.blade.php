@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Manajemen Arsip</h1>
+                    <h1>Peminjaman</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('home')}}">Arsip</a></li>
-                        <li class="breadcrumb-item active">Data Arsip</li>
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">Peminjaman</a></li>
+                        <li class="breadcrumb-item active">Data Peminjaman</li>
                     </ol>
                 </div>
             </div>
@@ -27,9 +27,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('arsip.create') }}" class="btn btn-primary">
-                                <i class="fas fa-user-plus    "></i>
-                                Tambah Data
+                            <a href="{{ route('peminjaman.create') }}" class="btn btn-primary">
+                                <i class="fas fa-folder-open"></i>
+                                Pinjam Arsip
                             </a>
                             <div class="">
                                 <a href="" class="btn btn-default btn-flat " data-toggle="modal" data-target="#importModal" title="Import File">
@@ -47,21 +47,15 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         
-                        <form action="{{ route('arsip.index') }}" method="GET">
-                            {{-- @csrf --}}
-                        </form>
                         <div class="table-responsive">
                             <table class="table table-head-fixed text-nowrap table-bordered  table-hover" id="myTable">
                                 <thead>
                                     <tr class="text-center">
                                         <th>No</th>
-                                        <th>No Polis</th>
-                                        <th>No Kontrak</th>
-                                        <th>Valid</th>
-                                        <th>Customer</th>
-                                        <th>Nama</th>
-                                        <th>Rak</th>
-                                        <th>Keteragan</th>
+                                        <th>Arsip</th>
+                                        <th>Tgl Pinjam</th>
+                                        <th>Tgl Kembali</th>
+                                        <th>Petugas</th>
                                         <th>Status</th>
                                         <th>#</th>
                                     </tr>
@@ -71,20 +65,31 @@
                                     @forelse($table as $row)
                                         <tr>
                                             <td width="5%" class="text-center">{{$no++}}</td>
-                                            <td>{{$row->no_polis }}</td>
-                                            <td>{{$row->no_kontrak }}</td>
-                                            <td>{{date_format(date_create($row->tanggal_valid),"d, M Y") }}</td>
-                                            <td>{{$row->nama_customer }}</td>
                                             <td>{{$row->nama_arsip }}</td>
-                                            <td>{{$row->nama_rak }}</td>
-                                            <td>{{substr($row->keterangan_arsip,0,10) }} ...</td>   
+                                            <td class="text-center">{{date_format(date_create($row->tanggal_peminjaman),"d, M Y") }}</td>
                                             <td class="text-center">
-                                              @if($row->status_arsip == 0)
-                                                <span class="badge badge-danger">archieved</span>
-                                              @elseif($row->status_arsip == 1)
-                                                <span class="badge badge-success">on shelf</span>
-                                              @elseif($row->status_arsip == 2)
-                                                <span class="badge badge-info">Dipinjam</span>
+                                                @if($row->tanggal_kembali == null)
+                                                   <span class="badge badge-info">Tidak Ada Data</span>
+                                                @else
+                                                    {{date_format(date_create($row->tanggal_kembali),"d, M Y") }}
+                                                @endif
+                                            </td>   
+                                            <td>
+                                                @if($row->name == null)
+                                                <center> <span class="badge badge-info ">Tidak Ada Data</span> </center>
+                                                @else
+                                                    {{$row->name}}
+                                                @endif
+                                            </td> 
+                                            <td class="text-center">
+                                              @if($row->status_peminjaman == 0)
+                                                <span class="badge badge-danger">Ditolak</span>
+                                              @elseif($row->status_peminjaman == 1)
+                                                <span class="badge badge-info">Menunggu</span>
+                                              @elseif($row->status_peminjaman == 2)
+                                                <span class="badge badge-warning">Dipinjam</span>
+                                              @elseif($row->status_peminjaman == 3)
+                                                <span class="badge badge-success">Selesai</span>
                                               @else
                                                 <span class="badge badge-danger">Error</span>
                                               @endif
@@ -95,27 +100,22 @@
                                                         <i class="fas fa-ellipsis-v    "></i>
                                                     </button>
                                                     <ul class="dropdown-menu">
+
                                                         <li>
                                                             <a class="dropdown-item"
-                                                                href="{{ route('arsip.edit', $row->id_arsip) }}">
-                                                                <i class="fas fa-edit    "></i>
-                                                                Edit
+                                                                href="#">
+                                                                <i class="fas fa-eye"></i>
+                                                                Detail
                                                             </a>
                                                         </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#"
-                                                                onclick="handleDelete ({{ $row->id_arsip }})">
-                                                                <i class="fas fa-trash    "></i>
-                                                                Delete
-                                                            </a>
-                                                        </li>
+
                                                     </ul>
                                                 </div>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">Data Tidak Ada</td>
+                                            <td colspan="7" class="text-center">Data Tidak Ada</td>
                                         </tr>
                                     @endforelse
     
@@ -167,7 +167,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Import Data arsip</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Import Data transaksi</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -176,10 +176,10 @@
                 <form action="#" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                      <label for="import_arsip">Import File</label>
-                      <input type="file" class="form-control-file" name="import_arsip" id="import_arsip" placeholder="" aria-describedby="fileHelpId" required>
+                      <label for="import_transaksi">Import File</label>
+                      <input type="file" class="form-control-file" name="import_transaksi" id="import_transaksi" placeholder="" aria-describedby="fileHelpId" required>
                       <small id="fileHelpId" class="form-text text-muted">Tipe file : xls, xlsx</small>
-                      <small id="fileHelpId" class="form-text text-muted">Pastikan file upload sesuai format. <br> <a href="{{ url('template/arsip_template.xlsx') }}">Download contoh format file xlsx <i class="fas fa-download ml-1   "></i></a></small>
+                      <small id="fileHelpId" class="form-text text-muted">Pastikan file upload sesuai format. <br> <a href="{{ url('template/transaksi_template.xlsx') }}">Download contoh format file xlsx <i class="fas fa-download ml-1   "></i></a></small>
                     </div>
                 
             </div>
@@ -201,14 +201,14 @@
 <script>
     function handleDelete(id) {
         let form = document.getElementById('deleteForm')
-        form.action = `./delete/arsip/${id}`
+        form.action = `./delete/transaksi/${id}`
         console.log(form)
         $('#deleteModal').modal('show')
     }
 
 </script>
 
-@error('import_arsip')
+@error('import_transaksi')
     {{-- <div class="text-danger small mt-1">{{ $message }}</div> --}}
     <script>
         $(document).ready(function () {

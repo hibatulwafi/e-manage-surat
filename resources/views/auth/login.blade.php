@@ -68,7 +68,7 @@
                 <h6>Admin</h6>
                 <span>username : admin@admin.com</span><br>
                 <span>password : password</span><br><br>
-                <h6>User</h6>
+                <h6>Pegawai</h6>
                 <span>username : user1@example.com</span><br>
                 <span>password : password</span>
             </div>

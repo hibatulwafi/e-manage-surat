@@ -63,6 +63,7 @@
         </li>
         @endif
 
+        @if (auth()->user()->can('manajemen arsip'))
         <li class="nav-item has-treeview {{ (request()->segment(1) == 'arsip' || request()->segment(1) == 'tambaharsip' ) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->segment(1) == 'arsip' || request()->segment(1) == 'tambaharsip' ) ? 'active' : '' }}">
                 <i class="fas fa-archive nav-icon"></i>
@@ -78,8 +79,7 @@
                             &nbsp;&nbsp;<i class="fas fa-plus-square nav-icon   "></i>
                             <p>Tambah</p>
                         </a>
-                    </li>   
-
+                    </li> 
                     <li class="nav-item">
                         <a href="{{ route('arsip.index') }}"
                             class="nav-link {{ request()->routeIs('arsip.index') == 'arsip.index' ? 'active' : '' }}">
@@ -89,7 +89,9 @@
                     </li>   
             </ul>
         </li>
+        @endif
 
+        @if (auth()->user()->can('manajemen rak'))
         <li class="nav-item has-treeview {{ (request()->segment(1) == 'rak' || request()->segment(1) == 'tambahrak' ) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->segment(1) == 'rak' || request()->segment(1) == 'tambahrak' ) ? 'active' : '' }}">
                 <i class="fas fa-tasks nav-icon    "></i>
@@ -116,12 +118,14 @@
                     </li>   
             </ul>
         </li>
+        @endif
 
+        @if (auth()->user()->can('manajemen transaksi'))
         <li class="nav-item has-treeview {{ (request()->segment(1) == 'transaksi' || request()->segment(1) == 'approval' || request()->segment(1) == 'history' ) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->segment(1) == 'transaksi' || request()->segment(1) == 'approval' || request()->segment(1) == 'history') ? 'active' : '' }}">
                 <i class="fas fa-calendar-check nav-icon    "></i>
                 <p>
-                    Peminjaman
+                    Transaksi
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
@@ -130,7 +134,7 @@
                         <a href="{{ route('transaksi.index') }}"
                             class="nav-link {{ request()->routeIs('transaksi.index') == 'transaksi.index' ? 'active' : '' }}">
                             &nbsp;&nbsp;<i class="fas fa-comments nav-icon   "></i>
-                            <p>Transaksi</p>
+                            <p>Peminjaman</p>
                         </a>
                     </li>  
 
@@ -151,7 +155,37 @@
                     </li>  
             </ul>
         </li>
+        @endif
 
+
+        @if (auth()->user()->can('manajemen peminjaman'))
+        <li class="nav-item has-treeview {{ (request()->segment(1) == 'peminjaman' || request()->segment(1) == 'riwayat' ) ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (request()->segment(1) == 'peminjaman' || request()->segment(1) == 'riwayat') ? 'active' : '' }}">
+                <i class="fas fa-calendar-check nav-icon    "></i>
+                <p>
+                    Peminjaman
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('peminjaman.user') }}"
+                            class="nav-link {{ request()->routeIs('peminjaman.user') == 'peminjaman.user' ? 'active' : '' }}">
+                            &nbsp;&nbsp;<i class="fas fa-comments nav-icon   "></i>
+                            <p>Peminjaman</p>
+                        </a>
+                    </li>  
+
+                    <li class="nav-item">
+                        <a href="{{ route('riwayat.user') }}"
+                            class="nav-link {{ request()->routeIs('riwayat.user') == 'riwayat.user' ? 'active' : '' }}">
+                            &nbsp;&nbsp;<i class="fas fa-history nav-icon   "></i>
+                            <p>Riwayat</p>
+                        </a>
+                    </li>  
+            </ul>
+        </li>
+        @endif
         
 
         @role('admin') 
