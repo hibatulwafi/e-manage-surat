@@ -1,13 +1,13 @@
-## About E Arsip Laravel
+## About E Manage Surat Laravel
 
-E- Arsip
+E- Surat
 
 ## Installasi
 - Download repository dan ekstrak atau clone repository
 	
 - Masuk ke direktori aplikasi dan jalankan composer
 	```sh
-	$ cd e-arsip-laravel
+	$ cd e-manage-surat-laravel
 	$ composer install
 	```
  - Copy file .env.example menjadi .env
@@ -18,7 +18,7 @@ E- Arsip
 	```sh
 	$ php artisan key:generate
 	```
-- Buat Database
+- Export Database / ada di atas (db_surat.sql)
 - Edit database name, database username dan database password di file .env
     ```sh
 	DB_DATABASE=your_db.
