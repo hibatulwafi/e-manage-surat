@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 
 class UserController extends Controller
@@ -47,6 +48,16 @@ class UserController extends Controller
         return view('users.create', compact('roles'));
     }
 
+    public function getuser(Request $request){
+
+        if ($request->id == "siswa") {
+            $data['user'] = DB::table ('tb_siswa')->get(["nis as id","nama_siswa as name"]);
+        }elseif ($request->id == "guru"){
+            $data['user'] = DB::table ('tb_guru')->get(["nip as id","nama_guru as name"]);
+        }
+        return response()->json($data);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -54,23 +65,42 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    { 
+       $cekrole = DB::table('roles')->where('name','=',$request->role)->first();
+
+       $cekuser=DB::table('users')->select(DB::raw('MAX(id) as kd_max'));
+       if($cekuser->count()>0){
+            foreach($cekuser->get() as $k){
+                $id = $k->kd_max+1;
+            }
+       }else{
+        $id = "1";
+       }
+
         $this->validate($request, [
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
-            'role' => 'required'
+            'role' => 'required',
+            'profile' => 'required'
         ]);
 
         $user = User::firstOrCreate([
             'email' => $request->email
         ], [
+            'id' => $id,
             'name' => $request->name,
             'password' => bcrypt($request->password),
             'status' => true
         ]);
 
         $user->assignRole($request->role);
+
+        DB::table('tb_login')->insert([
+            'id_user' => $id,
+            'id_role' => $cekrole->id,
+            'id_profil' => $request->profile,
+            ]);
 
         session()->flash('success', "Data User : $user->name Berhasil Ditambahkan");
 

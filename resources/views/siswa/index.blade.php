@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Manajemen Arsip</h1>
+                    <h1>Manajemen Siswa</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('home')}}">Arsip</a></li>
-                        <li class="breadcrumb-item active">Data Arsip</li>
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">Siswa</a></li>
+                        <li class="breadcrumb-item active">Data Siswa</li>
                     </ol>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('arsip.create') }}" class="btn btn-primary">
+                            <a href="{{ route('siswa.create') }}" class="btn btn-primary">
                                 <i class="fas fa-user-plus    "></i>
                                 Tambah Data
                             </a>
@@ -47,22 +47,19 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         
-                        <form action="{{ route('arsip.index') }}" method="GET">
+                        <form action="{{ route('siswa.index') }}" method="GET">
                             {{-- @csrf --}}
                         </form>
                         <div class="table-responsive">
-                            <table class="table table-head-fixed text-nowrap table-bordered  table-hover" id="myTable">
+                            <table class="table table-head-fixed text-nowrap table-hover" id="myTable">
                                 <thead>
                                     <tr class="text-center">
                                         <th>No</th>
-                                        <th>No Polis</th>
-                                        <th>No Kontrak</th>
-                                        <th>Valid</th>
-                                        <th>Customer</th>
+                                        <th>NIS</th>
+                                        <th>NISN</th>
                                         <th>Nama</th>
-                                        <th>Rak</th>
-                                        <th>Keteragan</th>
-                                        <th>Status</th>
+                                        <th>Kelas</th>
+                                        <th>Telepon</th>
                                         <th>#</th>
                                     </tr>
                                 </thead>
@@ -71,24 +68,11 @@
                                     @forelse($table as $row)
                                         <tr>
                                             <td width="5%" class="text-center">{{$no++}}</td>
-                                            <td>{{$row->no_polis }}</td>
-                                            <td>{{$row->no_kontrak }}</td>
-                                            <td>{{date_format(date_create($row->tanggal_valid),"d, M Y") }}</td>
-                                            <td>{{$row->nama_customer }}</td>
-                                            <td>{{$row->nama_arsip }}</td>
-                                            <td>{{$row->nama_rak }}</td>
-                                            <td>{{substr($row->keterangan_arsip,0,10) }} ...</td>   
-                                            <td class="text-center">
-                                              @if($row->status_arsip == 0)
-                                                <span class="badge badge-danger">archieved</span>
-                                              @elseif($row->status_arsip == 1)
-                                                <span class="badge badge-success">on shelf</span>
-                                              @elseif($row->status_arsip == 2)
-                                                <span class="badge badge-info">Dipinjam</span>
-                                              @else
-                                                <span class="badge badge-danger">Error</span>
-                                              @endif
-                                            </td>
+                                            <td>{{$row->nis }}</td>
+                                            <td>{{$row->nisn }}</td>
+                                            <td>{{$row->nama_siswa }}</td>
+                                            <td>{{$row->kelas }}</td>
+                                            <td>{{$row->no_telepon }}</td>
                                             <td style="width: 20px">
                                                 <div class="btn-group">
                                                     <button type="button" class="btn" data-toggle="dropdown">
@@ -97,14 +81,14 @@
                                                     <ul class="dropdown-menu">
                                                         <li>
                                                             <a class="dropdown-item"
-                                                                href="{{ route('arsip.edit', $row->id_arsip) }}">
+                                                                href="{{ route('siswa.edit', $row->nis) }}">
                                                                 <i class="fas fa-edit    "></i>
                                                                 Edit
                                                             </a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item" href="#"
-                                                                onclick="handleDelete ({{ $row->id_arsip }})">
+                                                                onclick="handleDelete ({{$row->nis}})">
                                                                 <i class="fas fa-trash    "></i>
                                                                 Delete
                                                             </a>
@@ -115,7 +99,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">Data Tidak Ada</td>
+                                            <td colspan="7" class="text-center">Data Tidak Ada</td>
                                         </tr>
                                     @endforelse
     
@@ -167,7 +151,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Import Data arsip</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Import Data siswa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -176,10 +160,10 @@
                 <form action="#" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                      <label for="import_arsip">Import File</label>
-                      <input type="file" class="form-control-file" name="import_arsip" id="import_arsip" placeholder="" aria-describedby="fileHelpId" required>
+                      <label for="import_siswa">Import File</label>
+                      <input type="file" class="form-control-file" name="import_siswa" id="import_siswa" placeholder="" aria-describedby="fileHelpId" required>
                       <small id="fileHelpId" class="form-text text-muted">Tipe file : xls, xlsx</small>
-                      <small id="fileHelpId" class="form-text text-muted">Pastikan file upload sesuai format. <br> <a href="{{ url('template/arsip_template.xlsx') }}">Download contoh format file xlsx <i class="fas fa-download ml-1   "></i></a></small>
+                      <small id="fileHelpId" class="form-text text-muted">Pastikan file upload sesuai format. <br> <a href="{{ url('template/siswa_template.xlsx') }}">Download contoh format file xlsx <i class="fas fa-download ml-1   "></i></a></small>
                     </div>
                 
             </div>
@@ -201,11 +185,10 @@
 <script>
     function handleDelete(id) {
         let form = document.getElementById('deleteForm')
-        form.action = `./delete/arsip/${id}`
+        form.action = `./siswa/delete/${id}`
         console.log(form)
         $('#deleteModal').modal('show')
     }
-
 </script>
 
 @error('import_arsip')
@@ -234,5 +217,4 @@
 
     </script>
 @endif
-
 @endsection

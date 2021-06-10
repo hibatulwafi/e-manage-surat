@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Manajemen Rak</h1>
+                    <h1>Manajemen Surat</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('home')}}">Rak</a></li>
-                        <li class="breadcrumb-item active">Data Rak</li>
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">Surat</a></li>
+                        <li class="breadcrumb-item active">Data Surat</li>
                     </ol>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('rak.create') }}" class="btn btn-primary">
+                            <a href="{{ route('surat.create') }}" class="btn btn-primary">
                                 <i class="fas fa-user-plus    "></i>
                                 Tambah Data
                             </a>
@@ -47,7 +47,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         
-                        <form action="{{ route('rak.index') }}" method="GET">
+                        <form action="{{ route('surat.index') }}" method="GET">
                             {{-- @csrf --}}
                         </form>
                         <div class="table-responsive">
@@ -55,9 +55,11 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>No</th>
-                                        <th>Kode Rak</th>
-                                        <th>Nama Rak</th>
+                                        <th>Nama</th>
+                                        <th>Rak</th>
                                         <th>Keteragan</th>
+                                        <th>Jenis</th>
+                                        <th>File</th>
                                         <th>#</th>
                                     </tr>
                                 </thead>
@@ -65,10 +67,14 @@
                                     @php($no=1)
                                     @forelse($table as $row)
                                         <tr>
-                                            <td width="10%" class="text-center">{{$no++}}</td>
-                                            <td>{{$row->kode_rak }}</td>
+                                            <td width="5%" class="text-center">{{$no++}}</td>
+                                            <td>{{$row->nama_surat }}</td>
                                             <td>{{$row->nama_rak }}</td>
-                                            <td>{{$row->keterangan_rak }}</td>   
+                                            <td>{{$row->keterangan_surat}}</td>  
+                                            <td>{{$row->jenis_surat }}</td> 
+                                            <td class="text-center"><a class="btn btn-sm btn-success" href="{{url($row->path."/".$row->file)}}"> 
+                                                <i class="fas fa-download"></i> &nbsp; Download </a> 
+                                            </td>
                                             <td style="width: 20px">
                                                 <div class="btn-group">
                                                     <button type="button" class="btn" data-toggle="dropdown">
@@ -77,16 +83,9 @@
                                                     <ul class="dropdown-menu">
                                                         <li>
                                                             <a class="dropdown-item"
-                                                                href="{{ route('rak.edit', $row->id_rak) }}">
+                                                                href="{{ route('surat.edit', $row->id_surat) }}">
                                                                 <i class="fas fa-edit    "></i>
                                                                 Edit
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#"
-                                                                onclick="handleDelete ({{ $row->id_rak }})">
-                                                                <i class="fas fa-trash    "></i>
-                                                                Delete
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -147,7 +146,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Import Data rak</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Import Data surat</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -156,10 +155,10 @@
                 <form action="#" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                      <label for="import_rak">Import File</label>
-                      <input type="file" class="form-control-file" name="import_rak" id="import_rak" placeholder="" aria-describedby="fileHelpId" required>
+                      <label for="import_surat">Import File</label>
+                      <input type="file" class="form-control-file" name="import_surat" id="import_surat" placeholder="" aria-describedby="fileHelpId" required>
                       <small id="fileHelpId" class="form-text text-muted">Tipe file : xls, xlsx</small>
-                      <small id="fileHelpId" class="form-text text-muted">Pastikan file upload sesuai format. <br> <a href="{{ url('template/rak_template.xlsx') }}">Download contoh format file xlsx <i class="fas fa-download ml-1   "></i></a></small>
+                      <small id="fileHelpId" class="form-text text-muted">Pastikan file upload sesuai format. <br> <a href="{{ url('template/surat_template.xlsx') }}">Download contoh format file xlsx <i class="fas fa-download ml-1   "></i></a></small>
                     </div>
                 
             </div>
@@ -181,14 +180,14 @@
 <script>
     function handleDelete(id) {
         let form = document.getElementById('deleteForm')
-        form.action = `./rak/delete/${id}`
+        form.action = `./delete/surat/${id}`
         console.log(form)
         $('#deleteModal').modal('show')
     }
 
 </script>
 
-@error('import_rak')
+@error('import_surat')
     {{-- <div class="text-danger small mt-1">{{ $message }}</div> --}}
     <script>
         $(document).ready(function () {

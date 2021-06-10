@@ -92,6 +92,13 @@
                                             <div class="text-danger small mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="profile">User</label>
+                                        <select name="profile" id="profile" class="form-control">
+                                            <option value="">-Pilih Profile-</option>
+                                        </select>
+                                    </div>
                                     
                                     <div class="form-group d-flex justify-content-end">
                                         <a class="btn btn-default " href="{{ route('users.index') }}">Batal</a>
@@ -116,4 +123,37 @@
     </section>
     <!-- /.content -->
 </div>
+@endsection
+
+
+@section('scripts')
+<script>
+    
+$(document).ready(function() {  
+
+        $('#role').on('change', function() {
+            var id = this.value;
+
+            $("#profile").html('');
+                $.ajax({
+                url:"{{url('getuser')}}",
+                type: "POST",
+                data: {
+                id: id,
+                _token: '{{csrf_token()}}'
+                },
+                dataType : 'json',
+                    success: function(result){
+                    $.each(result.user,function(key,value){
+                    $("#profile").append('<option value="'+value.id+'">'+value.name+'</option>');
+                    });
+                    }
+                });
+        });
+});
+
+$(document).ready(function () {
+            $('#profile').select2()
+        });
+</script>
 @endsection

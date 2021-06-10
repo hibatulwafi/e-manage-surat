@@ -30,8 +30,8 @@ class HomeController extends Controller
     {
         $users = User::all();
         $rak = DB::table('tb_rak')->count();
-        $arsip = DB::table('tb_arsip')->join('tb_rak','tb_rak.id_rak','tb_arsip.id_rak')
-                 ->select('tb_arsip.*','tb_rak.kode_rak')->limit(5)->get();
+        $arsip = DB::table('tb_surat')->join('tb_rak','tb_rak.id_rak','tb_surat.id_rak')
+                 ->select('tb_surat.*','tb_rak.kode_rak')->limit(5)->get();
 
         return view('home', compact('rak', 'users', 'arsip'));
     }

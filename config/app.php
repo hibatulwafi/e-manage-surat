@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -106,7 +106,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'id_ID',
 
     /*
     |--------------------------------------------------------------------------
@@ -166,7 +166,8 @@ return [
          * Package Service Providers...
          */
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
+        Telegram\Bot\Laravel\TelegramServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -229,6 +230,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Setting' => App\Helper\SettingHelper::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Telegram' => Telegram\Bot\Laravel\Facades\Telegram::class,
 
     ],
 

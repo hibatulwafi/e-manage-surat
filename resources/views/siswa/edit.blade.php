@@ -7,13 +7,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Manajemen Arsip</h1>
+                    <h1>Manajemen Siswa</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('arsip.index') }}">Arsip</a></li>
-                        <li class="breadcrumb-item active">Create Arsip</li>
+                        <li class="breadcrumb-item"><a href="{{ route('siswa.index') }}">Siswa</a></li>
+                        <li class="breadcrumb-item active">Edit Siswa</li>
                     </ol>
                 </div>
             </div>
@@ -29,46 +29,36 @@
                     <div class="card-header">
                         <div class=" d-flex align-items-center justify-content-between">
                             
-                            <a href="{{ route('arsip.index')}}" class="btn">
+                            <a href="{{ route('siswa.index')}}" class="btn">
                                 <i class="fas fa-arrow-left  text-purple  "></i>
                             </a>
                             
-                            <span>Form Tambah Arsip</span>
+                            <span>Form Edit Siswa</span>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body" >
-                        <form method="POST" action="{{ route('arsip.store') }}" enctype="multipart/form-data">
-                            @csrf
+                        <form method="POST" action="{{ route('siswa.update') }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
                         <div class="row">
-                        <!-- Baris 1-->
+                            <!-- Baris 1-->
                             <div class="col-md-1"></div>
                             <div class="col-md-5 px-3">
                                 <div class="form-group">
-                                    <label for="id_rak">Rak Arsip</label>
-                                    <select name="id_rak" id="id_rak" class="form-control @error('id_rak') is-invalid @enderror">
-                                        <option value="" disabled="" selected="">-Pilih rak-</option>
-                                        @foreach ($rak as $item)
-                                        <option value="{{ $item->id_rak  }}"
-                                                @if ($item->id_rak == old('id_rak'))
-                                                    selected
-                                                @endif    
-                                            >
-                                            {{ $item->nama_rak }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                    @error('id_rak')
+                                    <label for="nis">NIS</label>
+                                    <input type="text" class="form-control @error('nis') is-invalid @enderror" name="nis" id="nis" value="{{ $qry->nis }}"  placeholder="NIS" readonly>
+                                    @error('nis')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
+
                             </div>
                             <div class="col-md-5 px-3">
-
                                 <div class="form-group">
-                                    <label for="nama_arsip">Nama</label>
-                                    <input type="text" class="form-control @error('nama_arsip') is-invalid @enderror" name="nama_arsip" id="nama_arsip" value="{{ old('nama_arsip') }}"  placeholder="Nama Arsip" autofocus>
-                                    @error('nama_arsip')
+                                    <label for="nisn">NISN</label>
+                                    <input type="text" class="form-control @error('nisn') is-invalid @enderror" name="nisn" id="nisn" value="{{ $qry->nisn }}"  placeholder="NISN" readonly>
+                                    @error('nisn')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -80,23 +70,24 @@
                             <div class="col-md-1"></div>
                             <div class="col-md-5 px-3">
                                 <div class="form-group">
-                                <label for="no_polis">No Polis</label>
-                                   <input type="text" class="form-control @error('no_polis') is-invalid @enderror" name="no_polis" id="no_polis" value="{{ old('no_polis') }}"  placeholder="No Polis" autofocus>
-                                    @error('no_polis')
+                                <label for="nama_siswa">Nama</label>
+                                   <input type="text" class="form-control @error('nama_siswa') is-invalid @enderror" name="nama_siswa" id="nama_siswa" value="{{ $qry->nama_siswa }}"  placeholder="Nama Siswa" autofocus>
+                                    @error('nama_siswa')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                             <div class="col-md-5 px-3">
-
                                 <div class="form-group">
-                                    <label for="no_kontrak">No Kontrak</label>
-                                    <input type="text" class="form-control @error('no_kontrak') is-invalid @enderror" name="no_kontrak" id="no_kontrak" value="{{ old('no_kontrak') }}"  placeholder="No Kontrak" autofocus>
-                                    @error('no_kontrak')
+                                    <label for="jk">Gender</label>
+                                    <select name="jk" class="form-control">
+                                       <option value="Laki - Laki" @if($qry->jk == "Laki - Laki") selected @endif >Laki - Laki</option>
+                                       <option value="Perempuan"  @if($qry->jk == "Perempuan") selected @endif >Perempuan</option>
+                                    </select> 
+                                    @error('jk')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-
                             </div>
                             <div class="col-md-1"></div>
 
@@ -104,40 +95,39 @@
                             <div class="col-md-1"></div>
                             <div class="col-md-5 px-3">
                                 <div class="form-group">
-                                    <label for="tanggal_valid">Tanggal Valid</label>
-                                   <input type="date" class="form-control @error('tanggal_valid') is-invalid @enderror" name="tanggal_valid" id="tanggal_valid" value="{{ old('tanggal_valid') }}"  placeholder="" autofocus>
-                                    @error('tanggal_valid')
+                                   <label for="tempat_lahir">Tempat Lahir</label>
+                                   <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" name="tempat_lahir" id="tempat_lahir" value="{{$qry->ttl}}"  placeholder="Tempat Lahir" autofocus>
+                                    @error('tempat_lahir')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="col-md-5 px-3">
 
                                 <div class="form-group">
-                                    <label for="nama_customer">Customer</label>
-                                    <input type="text" class="form-control @error('nama_customer') is-invalid @enderror" name="nama_customer" id="nama_customer" value="{{ old('nama_customer') }}"  placeholder="Nama Customer" autofocus>
-                                    @error('nama_customer')
+                                    <label for="no_telepon">No Telp</label>
+                                    <input type="text" class="form-control @error('no_telepon') is-invalid @enderror" name="no_telepon" id="no_telepon" value="{{$qry->no_telepon}}"  placeholder="0858 1234 1234" autofocus>
+                                    @error('no_telepon')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                             </div>
                             <div class="col-md-1"></div>
-
-
 
                             <!-- Baris 4-->
                             <div class="col-md-1"></div>
                             <div class="col-md-10 px-3">
                                 <div class="form-group">
-                                    <label for="keterangan_arsip">Keterangan</label>
-                                    <textarea class="form-control @error('keterangan_arsip') is-invalid @enderror" name="keterangan_arsip" id="keterangan_arsip" rows="3">{{ old('keterangan_arsip') }}</textarea>
-                                    @error('keterangan_arsip')
+                                    <label for="alamat_lengkap">Alamat Lengkap</label>
+                                    <textarea class="form-control @error('alamat_lengkap') is-invalid @enderror" name="alamat_lengkap" id="alamat_lengkap" rows="3">{{ $qry->alamat_lengkap }}</textarea>
+                                    @error('alamat_lengkap')
                                           <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                   </div>
                                   <div class="form-group d-flex justify-content-end">
-                                    <a class="btn btn-default " href="{{ route('arsip.index') }}">Batal</a>
+                                    <a class="btn btn-default " href="{{ route('siswa.index') }}">Batal</a>
                                     <button type="submit" class="btn btn-primary ml-2">
                                         Simpan
                                     </button>
@@ -146,7 +136,7 @@
                             <!-- /.col-md -->
                             <div class="col-md-1"></div>
                         </div>
-                    </form>
+                        </form>
                     </div>
                     <!-- /.card-body -->
                     {{-- <div class="card-footer clearfix">
@@ -161,12 +151,12 @@
     <!-- /.content -->
 </div>
 @endsection
-
 @section('scripts')
 <script>
     
         $(document).ready(function () {
-            $('#id_rak').select2()
+            $('#kategori_id').select2()
+
         });
 
 </script>

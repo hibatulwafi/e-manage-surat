@@ -25,71 +25,56 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between">
-                            
-                            <div class="">
-                                <a href="" class="btn btn-default btn-flat " data-toggle="modal" data-target="#importModal" title="Import File">
-                                    <i class="fas fa-file-import    "></i>
-                                </a>
-                                <a href="#" target="blank" class="btn btn-default btn-flat" title="Cetak PDF">
-                                    <i class="fas fa-file-pdf    "></i>
-                                </a>
-                                <a href="#" class="btn btn-default btn-flat" title="Export Excel">
-                                    <i class="fas fa-file-excel    "></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                  
                     <!-- /.card-header -->
                     <div class="card-body">
                         
-                        <form action="{{ route('transaksi.index') }}" method="GET">
-                            {{-- @csrf --}}
-                        </form>
+                        <p><h5>Pengajuan Surat Tugas</h5></p>
+                        <hr/>
                         <div class="table-responsive">
                             <table class="table table-head-fixed text-nowrap table-bordered  table-hover" id="myTable">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>No</th>
-                                        <th>Nama Peminjam</th>
-                                        <th>Arsip</th>
-                                        <th>Tanggal Pinjam</th>
-                                        <th>Petugas</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <tr class="text-center">
+                                            <th>No</th>
+                                            <th>NIP </th>
+                                            <th>Nama </th>
+                                            <th>Kegiatan</th>
+                                            <th>Waktu</th>
+                                            <th>Tempat</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        </tr>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                 <tbody>
                                     @php($no=1)
                                     @forelse($table as $row)
                                         <tr>
                                             <td width="5%" class="text-center">{{$no++}}</td>
-                                            <td>{{$row->nama_peminjam }}</td>
-                                            <td>{{$row->nama_arsip }}</td>
-                                            <td class="text-center">{{date_format(date_create($row->tanggal_peminjaman),"d, M Y") }}</td>
-                                            <td>{{$row->name }}</td> 
+                                            <td>{{$row->nip }}</td>
+                                            <td>{{$row->nama_guru }}</td>
+                                            <td>{{$row->nama_kegiatan }}</td>
+                                            <td>{{$row->jam }} - {{date_format(date_create($row->tanggal),"d, M Y") }}</td>
+                                            <td>{{$row->tempat }}</td>
                                             <td class="text-center">
-                                              @if($row->status_peminjaman == 0)
+                                              @if($row->status_pengajuan == 0)
                                                 <span class="badge badge-danger">Ditolak</span>
-                                              @elseif($row->status_peminjaman == 1)
+                                              @elseif($row->status_pengajuan == 1)
                                                 <span class="badge badge-info">Menunggu</span>
-                                              @elseif($row->status_peminjaman == 2)
-                                                <span class="badge badge-warning">Dipinjam</span>
-                                              @elseif($row->status_peminjaman == 3)
-                                                <span class="badge badge-success">Selesai</span>
+                                              @elseif($row->status_pengajuan == 2)
+                                                <span class="badge badge-success">Disetujui</span>
                                               @else
                                                 <span class="badge badge-danger">Error</span>
                                               @endif
                                             </td>
                                             <td style="width: 20px">
-                                                <a class="btn btn-success btn-sm"
-                                                    href="{{ route('approval.terima', $row->id_peminjaman) }}">
+                                                <a class="btn btn-success btn-sm" onclick="modalST('{{$row->id_st}}')">
                                                     <i class="fas fa-check"></i>
                                                     Terima
                                                 </a>
                                                 <a class="btn btn-danger btn-sm"
-                                                    href="{{ route('approval.tolak', $row->id_peminjaman) }}">
+                                                    href="{{ route('approval.tolak', $row->id_st) }}">
                                                     <i class="fas fa-times"></i>
                                                     Tolak
                                                 </a>
@@ -97,10 +82,89 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Data Tidak Ada</td>
+                                            <td colspan="4" class="text-center">Data Tidak Ada</td>
                                         </tr>
                                     @endforelse
-    
+                                </tbody>
+                            </table>
+                      </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                 </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                  
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        
+                        <p><h5>Pengajuan Surat Keterangan</h5></p>
+                        <hr/>
+                        <div class="table-responsive">
+                            <table class="table table-head-fixed text-nowrap table-bordered  table-hover" id="myTable">
+                                <thead>
+                                    <tr class="text-center">
+                                        <tr class="text-center">
+                                            <th>No</th>
+                                            <th>NIS </th>
+                                            <th>Nama </th>
+                                            <th>Kebutuhan </th>
+                                            <th>Tanggal </th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </tr>
+                                </thead>
+                                 <tbody>
+                                    @php($no=1)
+                                    @forelse($table2 as $row)
+                                        <tr>
+                                            <td width="5%" class="text-center">{{$no++}}</td>
+                                            <td>{{$row->nis }}</td>
+                                            <td>{{$row->nama_siswa }}</td>
+                                            <td>{{$row->keterangan }}</td>
+                                            <td> {{date_format(date_create($row->dibuat_pada),"H:i, d M Y") }}</td>
+                                            <td class="text-center">
+                                              @if($row->status_ket == 0)
+                                                <span class="badge badge-danger">Ditolak</span>
+                                              @elseif($row->status_ket == 1)
+                                                <span class="badge badge-info">Menunggu</span>
+                                              @elseif($row->status_ket == 2)
+                                                <span class="badge badge-success">Disetujui</span>
+                                              @else
+                                                <span class="badge badge-danger">Error</span>
+                                              @endif
+                                            </td>
+                                            <td style="width: 20px">
+                                                <a class="btn btn-success btn-sm" onclick="modalSK('{{$row->id_ket}}')">
+                                                    <i class="fas fa-check"></i>
+                                                    Terima
+                                                </a>
+                                                <a class="btn btn-danger btn-sm"
+                                                    href="{{ route('approvalket.tolak', $row->id_ket) }}">
+                                                    <i class="fas fa-times"></i>
+                                                    Tolak
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center">Data Tidak Ada</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                       </div>
@@ -117,28 +181,58 @@
     <!-- /.content -->
 </div>
 
-<!-- Modal Delete-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- Modal Surat Tugas-->
+<div class="modal fade" id="modalST" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Hapus Data</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Terima Pengajuan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <p class="mt-3">Apakah kamu yakin menghapus Data?</p>
+            <form action="" method="POST" id="deleteForm">
+            @csrf
+                <div class="modal-body">
+                    No Surat
+                    <input type="text" name="no_surat" value="800/000/SMAN1.CADISDIK WILV/2021" class="form-control">
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-success">Ya, Terima</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Surat Keterangan-->
+<div class="modal fade" id="modalSK" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Terima Pengajuan - Surat Keterangan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-footer">
-                <form action="" method="POST" id="deleteForm">
-                    @method('DELETE')
-                    @csrf
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak, Kembali</button>
-                    <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-                </form>
-            </div>
+            <form action="" method="POST" id="approveForm">
+            @csrf
+                <div class="modal-body">
+                    No Surat
+                    <input type="text" name="no_surat" value="422/000/SMAN1.CADISDIK WILV/2021" class="form-control">
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-success">Ya, Terima</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
@@ -181,11 +275,18 @@
 
 @section('scripts')
 <script>
-    function handleDelete(id) {
+    function modalST(id) {
         let form = document.getElementById('deleteForm')
-        form.action = `./delete/transaksi/${id}`
+        form.action = `./terima/approval/${id}`
         console.log(form)
-        $('#deleteModal').modal('show')
+        $('#modalST').modal('show')
+    }
+
+    function modalSK(id) {
+        let form = document.getElementById('approveForm')
+        form.action = `./terima/approvalket/${id}`
+        console.log(form)
+        $('#modalSK').modal('show')
     }
 
 </script>

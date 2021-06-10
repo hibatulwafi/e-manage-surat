@@ -3,8 +3,9 @@
 @section('content')
 <div class="login-box">
     <div class="login-logo">
-        <a href="#">E - ARSIP</a> <br>
-        <h6>Laravel 7</h6>
+        <a href="#">AMS - SMAN 1 CIKEMBAR</a> <br>
+        <h6>Sopyan Maulana</h6>
+
     </div>
     <!-- /.login-logo -->
     <div class="card">
@@ -68,8 +69,11 @@
                 <h6>Admin</h6>
                 <span>username : admin@admin.com</span><br>
                 <span>password : password</span><br><br>
-                <h6>Pegawai</h6>
+                <h6>Guru</h6>
                 <span>username : user1@example.com</span><br>
+                <span>password : password</span>
+                <h6>Siswa</h6>
+                <span>username : user2@example.com</span><br>
                 <span>password : password</span>
             </div>
         </div>
@@ -77,10 +81,15 @@
         
     </div>
     <div class="d-flex justify-content-center">
-        <a href="https://github.com/hibatulwafi" target="blank" class="mx-2 btn btn-default" title="github.com/isengoding">
+        <!-- <a href="https://github.com/hibatulwafi" target="blank" class="mx-2 btn btn-default" title="github.com/isengoding">
             <i class="fab fa-github"></i>
             <span>Github</span>
-        </a>
+        </a> -->
+           @php
+setlocale(LC_ALL, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID', 'en_US.UTF8', 'en_US.UTF-8', 'en_US.8859-1', 'en_US', 'American', 'ENG', 'English');
+$date = strftime( "%A, %d %B %Y %H:%M", time());
+echo "Saat ini: ".$date;
+        @endphp
     </div>
 </div>
 <!-- /.login-box -->
